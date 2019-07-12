@@ -1,0 +1,20 @@
+import cv2
+import numpy as np
+from keras.datasets import mnist
+from keras.utils import np_utils
+from numpy import newaxis
+nb_train_samples = 3000
+nb_valid_samples = 100
+num_classes = 10
+def load_mnist_data(img_rows, img_cols):
+    (X_train, Y_train), (X_valid, Y_valid) = mnist.load_data()
+    X_train = X_train[:, :, :, newaxis]
+    X_valid = X_valid[:, :, :, newaxis]
+    X_train = np.array([cv2.resize(img, (img_rows,img_cols)) for img in X_train[:nb_train_samples, :, :, :]])
+    X_valid = np.array([cv2.resize(img, (img_rows,img_cols)) for img in X_valid[:nb_valid_samples, :, :, :]])
+    Y_train = np_utils.to_categorical(Y_train[:nb_train_samples], num_classes)
+    Y_valid = np_utils.to_categorical(Y_valid[:nb_valid_samples], num_classes)
+    X_train = X_train[:, :, :, newaxis]
+    X_valid = X_valid[:, :, :, newaxis]
+    return X_train, Y_train, X_valid, Y_valid
+
